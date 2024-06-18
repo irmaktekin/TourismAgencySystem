@@ -63,4 +63,20 @@ public class UserDao {
         }
         return user;
     }
+    public ArrayList<User> getAllUsers(){
+        return this.selectByQuery("Select * From public.user_");
+    }
+    public ArrayList <User> selectByQuery (String query){
+        ArrayList<User> users = new ArrayList<>();
+        try{
+            ResultSet rs = this.con.createStatement().executeQuery(query);
+            while(rs.next()){
+                users.add(this.mapResultSetToUser(rs));
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return users;
+    }
 }

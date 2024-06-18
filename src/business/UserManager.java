@@ -17,6 +17,9 @@ public class UserManager {
     public ArrayList<User> getAllUsers(){
         return this.userDao.getAllUsers();
     }
+    public User getById(int id){
+        return this.userDao.getById(id);
+    }
     public ArrayList<Object[]> getForTable(int size,ArrayList<User> users){
         ArrayList<Object[]> userList = new ArrayList<>();
         for(User obj : users){
@@ -32,5 +35,14 @@ public class UserManager {
 
         }
         return userList;
+    }
+    public boolean deleteById(int id){
+        return this.userDao.deleteById(id);
+    }
+    public boolean update(User user){
+        return this.userDao.updateUser(user);
+    }
+    public boolean create(User user){
+        return this.userDao.createUser(user);
     }
 }

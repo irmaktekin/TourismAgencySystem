@@ -1,11 +1,21 @@
 package entity;
 
+import core.ComboItem;
+
 public class User {
     private int user_id;
     private String user_name;
     private String email;
     private String password;
     private String role;
+
+    public enum Role {
+        ADMIN,
+        ACCOUNTING
+    }
+
+    public User() {
+    }
 
     public User(int user_id, String role, String password, String email, String user_name) {
         this.user_id = user_id;
@@ -64,5 +74,8 @@ public class User {
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 '}';
+    }
+    public ComboItem getComboItem(){
+        return new ComboItem(this.getUser_id(),this.getRole());
     }
 }

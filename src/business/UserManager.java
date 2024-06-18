@@ -45,4 +45,19 @@ public class UserManager {
     public boolean create(User user){
         return this.userDao.createUser(user);
     }
+
+    public ArrayList<User> searchUser(User.Role userRole){
+        String query = "Select * From public.user_";
+        ArrayList<String> whereCondition = new ArrayList<>();
+
+        if(userRole !=null){
+            whereCondition.add("user_role = '"+userRole.toString() + "'");
+        }
+        if(!whereCondition.isEmpty()){
+            query += " Where " + String.join(" AND ", whereCondition) ;
+        }
+        System.out.println(query);
+
+        return this.userDao.selectByQuery(query);
+    }
 }

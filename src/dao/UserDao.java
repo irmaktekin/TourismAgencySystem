@@ -16,7 +16,7 @@ public class UserDao {
     }
     //List all users
     public ArrayList <User> findAll(){
-        ArrayList<User> users = new ArrayList<User>();
+        ArrayList<User> users = new ArrayList<>();
         String query = "Select * From public.user_";
         try{
             ResultSet rs = this.con.createStatement().executeQuery(query);
@@ -78,5 +78,76 @@ public class UserDao {
             e.printStackTrace();
         }
         return users;
+    }
+    public boolean deleteById(int id){
+        String query = "Delete From public.user_ Where user_id = ?";
+        try{
+            PreparedStatement pr = con.prepareStatement(query);
+            pr.setInt(1,id);
+            return pr.executeUpdate() !=-1;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return true;
+    }
+    public User getById(int id){
+        User userObj = null;
+        String query = "Select * From public.user_ where user_id = ?";
+        try{
+            PreparedStatement pr = con.prepareStatement(query);
+            pr.setInt(1,id);
+            ResultSet rs = pr.executeQuery();
+            if(rs.next()) userObj = this.mapResultSetToUser(rs);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return userObj;
+    }
+
+    public boolean updateUser(User user) {
+        String query = "Update public.user_ Set " +
+                "user_name = ? , " +
+                "email = ? , " +
+                "user_password = ? , " +
+                "user_role = ? " +
+                "Where user_id = ?";
+        try{
+            PreparedStatement pr = con.prepareStatement(query);
+            pr.setString(1,user.getUser_name());
+            pr.setString(2,user.getEmail());
+            pr.setString(3,user.getPassword());
+            pr.setString(4,user.getRole());
+            pr.setInt(5,user.getUser_id());
+            return pr.executeUpdate() != -1;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean createUser(User user) {
+        String query = "INSERT INTO public.user_ "+
+                "(" +
+                "user_name," +
+                "email," +
+                "user_password," +
+                "user_role"+
+                ")"+
+                " Values (?,?,?,?)";
+        try{
+            PreparedStatement pr = con.prepareStatement(query);
+            pr.setString(1,user.getUser_name());
+            pr.setString(2,user.getEmail());
+            pr.setString(3,user.getPassword());
+            pr.setString(4,user.getRole());
+            return pr.executeUpdate() != -1;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return true;
     }
 }

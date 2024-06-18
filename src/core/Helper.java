@@ -4,6 +4,30 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Helper {
+    public static void initializeTheme(){
+        for(UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()){
+            if("Nimbus".equals(info.getName())){
+                try{
+                    UIManager.setLookAndFeel(info.getClassName());
+                }
+                catch (Exception e){
+                    throw new RuntimeException(e);
+                }
+                break;
+            }
+        }
+    }
+    public static boolean confirm(String str){
+        String msg;
+        if(str.equals("confirm")){
+            msg = "Do you want to delete this?";
+        }
+        else{
+            msg = str;
+        }
+        return JOptionPane.showConfirmDialog(null,msg,"Are you sure?",JOptionPane.YES_NO_OPTION)==0;
+    }
+
     //load component to the center of the screen
     public static int getLocationPoint(String type, Dimension size){
         return switch (type) {

@@ -13,10 +13,10 @@ public enum HostelType {
     HostelType(String hostelType){
         this.hostelType = hostelType;
     }
-    public String getHostelType(){
-        return  hostelType;
-    }
 
+    public String getHostelTypeInfo(){
+        return this.name();
+    }
     @Override
     public String toString() {
         return "HostelType{" +

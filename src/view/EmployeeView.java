@@ -1,6 +1,8 @@
 package view;
 
 import business.HotelManager;
+import core.Helper;
+import entity.Hotel;
 import entity.User;
 
 import javax.swing.*;
@@ -48,7 +50,7 @@ public class EmployeeView extends Layout{
         this.hotelMenu = new JPopupMenu();
         tableRowSelect(table_hotels,hotelMenu);
         this.hotelMenu.add("Create").addActionListener(e->{
-            HotelView hotelView = new HotelView(new User());
+            HotelView hotelView = new HotelView(new User(),new Hotel());
             hotelView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
@@ -57,7 +59,29 @@ public class EmployeeView extends Layout{
                 }
             });
 
-
+        });
+        this.hotelMenu.add("Update").addActionListener(e->{
+            int selectedHotelId = this.getTableSelectedRow(table_hotels,0);
+            HotelView hotelView = new HotelView(user,this.hotelManager.getById(selectedHotelId));
+            hotelView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    //Reload the user table after dispose of the edit view
+                    loadHotelTable(null);
+                }
+            });
+        });
+        this.hotelMenu.add("Delete").addActionListener(e->{
+            if(Helper.confirm("Do you want to delete this record?")){
+                int selectedHotelId = this.getTableSelectedRow(table_hotels,0);
+                if(this.hotelManager.deleteById(selectedHotelId)){
+                    Helper.displayMessage("done");
+                    loadHotelTable(null);
+                }
+                else{
+                    Helper.displayMessage("error");
+                }
+            }
         });
     }
 

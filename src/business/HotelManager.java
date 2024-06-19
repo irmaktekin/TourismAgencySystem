@@ -33,4 +33,16 @@ public class HotelManager {
         }
         return hotel_List;
     }
+    public boolean update(Hotel hotel){
+        return this.hotelDao.updateHotel(hotel);
+    }
+    public boolean create(Hotel hotel){
+        return this.hotelDao.createHotel(hotel);
+    }
+    public boolean deleteById(int id){
+        return this.hotelDao.deleteById(id);
+    }
+    public Hotel getById(int id){
+        return this.hotelDao.getById(id);
+    }
 }

@@ -29,7 +29,7 @@ public class EmployeeView extends Layout{
     public EmployeeView(User user){
         this.user = user;
         this.add(container);
-        initalizeGui(400,400);
+        initalizeGui(600,500);
         this.lbl_welcome_emp.setText("Welcome " + this.user.getUser_name() +"." );
         this.hotelManager = new HotelManager();
         loadHotelTable(null);

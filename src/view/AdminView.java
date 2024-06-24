@@ -31,7 +31,7 @@ public class AdminView extends Layout{
     public AdminView(User user){
         this.userManager = new UserManager();
         this.add(container);
-        this.initalizeGui(400,400);
+        this.initalizeGui(500,400);
         this.user = user;
         if(this.user == null){
             dispose();

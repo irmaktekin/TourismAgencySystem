@@ -150,7 +150,7 @@ public class RoomDao {
         return null; // Return null if no matching enum constant is found
     }
 
-    public ArrayList<Room> searchForReservation(String hotelLocation, LocalDate startDate, LocalDate endDate,Integer customerCount) {
+    public ArrayList<Room> searchForReservation(String hotelLocation, LocalDate startDate, LocalDate endDate,int customerCount) {
         int parameterIndex = 1;
         ArrayList<Room> rooms = new ArrayList<>();
         List<String> conditions = new ArrayList<>();

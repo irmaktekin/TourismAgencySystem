@@ -13,10 +13,9 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class HotelView extends Layout {
     private JPanel container;
@@ -67,35 +66,28 @@ public class HotelView extends Layout {
         hotelManager = new HotelManager();
         facilityManager = new FacilityManager();
         timePeriodManager = new TimePeriodManager();
-        //btn_save_hotel = new JButton("Save");
         lbl_facility = new JLabel("Select Facility");
-       // container.setLayout(new GridLayout(20,4));
         this.add(container);
         initalizeGui(600,600);
         setHostelType();
         setHotelStar();
         loadFacilities();
-        //oadCheckBoxComponent();
-
-
 
         //Set fields
         if(this.hotel.getHotel_id() !=0){
             this.lbl_title_hotel.setText("Edit Hotel");
             this.fld_hotel_name.setText(hotel.getHotel_name());
             this.fld_hotel_address.setText(hotel.getAddress());
-            this.fld_hotel_phone.setText(hotel.getPhone_number().toString());
+            this.fld_hotel_phone.setText(hotel.getPhone_number());
             this.fld_hotel_mail.setText(hotel.getMail());
             ComboItem selectedItem = hotel.getComboItem();
             this.cmb_star.getModel().setSelectedItem(selectedItem);
-            this.fld_strdate1.setText(timePeriod.getStart_date1().format( DateTimeFormatter.ofPattern("yyyy/MM/dd")));
-            this.fld_fnshdate1.setText(timePeriod.getEnd_date1().format( DateTimeFormatter.ofPattern("yyyy/MM/dd")));
-            this.fld_strtdate2.setText(timePeriod.getStart_date2().format( DateTimeFormatter.ofPattern("yyyy/MM/dd")));
-            this.fld_fnshdate2.setText(timePeriod.getEnd_date2().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+            this.fld_strdate1.setText(timePeriod.getStart_date1().format( DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            this.fld_fnshdate1.setText(timePeriod.getEnd_date1().format( DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            this.fld_strtdate2.setText(timePeriod.getStart_date2().format( DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            this.fld_fnshdate2.setText(timePeriod.getEnd_date2().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             setCheckBoxesForHotel(hotel.getHotel_id());
-            }
-
-
+        }
 
         btn_save_hotel.addActionListener(e->{
             if(Helper.isFieldListBlank(new JTextField[]{this.fld_hotel_mail,this.fld_hotel_name,this.fld_hotel_phone,this.fld_strdate1,fld_strtdate2,fld_fnshdate1,fld_fnshdate2})){
@@ -103,67 +95,75 @@ public class HotelView extends Layout {
             }
             else{
                 boolean result = false;
-                boolean result2 = false;
-                this.hotel.setHotel_name(fld_hotel_name.getText());
-                this.hotel.setStar(Integer.parseInt(cmb_star.getModel().getSelectedItem().toString()));
-                this.hotel.setPhone_number(Integer.parseInt(fld_hotel_phone.getText()));
-                this.hotel.setAddress(fld_hotel_address.getText());
-                this.hotel.setMail(fld_hotel_mail.getText());
-                this.timePeriod.setHotel_id(hotel.getHotel_id());
-                this.timePeriod.setStart_date1(LocalDate.parse(fld_strdate1.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                this.timePeriod.setEnd_date1(LocalDate.parse(fld_fnshdate1.getText(),DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                this.timePeriod.setStart_date2(LocalDate.parse(fld_strtdate2.getText(),DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                this.timePeriod.setEnd_date2(LocalDate.parse(fld_fnshdate2.getText(),DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                try{
+                    this.hotel.setHotel_name(fld_hotel_name.getText());
+                    this.hotel.setStar(Integer.parseInt(cmb_star.getModel().getSelectedItem().toString()));
+                    this.hotel.setPhone_number(fld_hotel_phone.getText());
+                    this.hotel.setAddress(fld_hotel_address.getText());
+                    this.hotel.setMail(fld_hotel_mail.getText());
+                    this.timePeriod.setHotel_id(hotel.getHotel_id());
+                    this.timePeriod.setStart_date1(LocalDate.parse(fld_strdate1.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    this.timePeriod.setEnd_date1(LocalDate.parse(fld_fnshdate1.getText(),DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    this.timePeriod.setStart_date2(LocalDate.parse(fld_strtdate2.getText(),DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    this.timePeriod.setEnd_date2(LocalDate.parse(fld_fnshdate2.getText(),DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    List<String> selectedHostelTypes = new ArrayList<>();
+                    List<JCheckBox> checkBoxList = new ArrayList<>();
+                    Component[] components = cnt_hosteltypes.getComponents();
+                    for (Component component : components) {
+                        if (component instanceof JCheckBox) {
+                            checkBoxList.add((JCheckBox) component);
+                        }
+                    }
 
-                List<String> selectedHostelTypes = new ArrayList<>();
-                List<JCheckBox> checkBoxList = new ArrayList<>();
-                Component[] components = cnt_hosteltypes.getComponents();
-                for (Component component : components) {
-                    if (component instanceof JCheckBox) {
-                        checkBoxList.add((JCheckBox) component);
+                    for (JCheckBox checkBox : checkBoxList) {
+                        if (checkBox.isSelected()) {
+                            selectedHostelTypes.add(checkBox.getText()); // Assuming checkbox text is hostel type name
+                        }
+                    }
+
+                    List<String> selectedFacilities = new ArrayList<>();
+                    List<JCheckBox> facilityList = new ArrayList<>();
+                    Component[] facilities = cnt_facility.getComponents();
+                    for (Component component : facilities) {
+                        if (component instanceof JCheckBox) {
+                            facilityList.add((JCheckBox) component);
+                        }
+                    }
+
+                    for (JCheckBox checkBox : facilityList) {
+                        if (checkBox.isSelected()) {
+                            System.out.println(checkBox.getText());
+                            selectedFacilities.add(checkBox.getText()); // Assuming checkbox text is hostel type name
+                        }
+                    }
+                    if(this.hotel.getHotel_id() !=0){
+                        this.timePeriod = this.hotelManager.update(this.hotel,this.timePeriod);
+                        result =true;
+                        //this.timePeriod = this.timePeriodManager.update(this.timePeriod,this.hotel.getHotel_id());
+                    }
+                    else{
+                        this.timePeriod = this.hotelManager.create(this.hotel,selectedHostelTypes,selectedFacilities,timePeriod);
+                        result=true;
+
+                    }
+
+                    //If updated/created successfully
+                    if( result){
+                        Helper.displayMessage("done");
+                        dispose();
+                    }
+                    else{
+                        Helper.displayMessage("error");
                     }
                 }
+                catch (DateTimeParseException exception){
+                    Helper.displayMessage("formatmismatchdate");
 
-                for (JCheckBox checkBox : checkBoxList) {
-                    if (checkBox.isSelected()) {
-                        selectedHostelTypes.add(checkBox.getText()); // Assuming checkbox text is hostel type name
-                    }
                 }
-
-
-
-
-                List<String> selectedFacilities = new ArrayList<>();
-                List<JCheckBox> facilityList = new ArrayList<>();
-                Component[] facilities = cnt_facility.getComponents();
-                for (Component component : facilities) {
-                    if (component instanceof JCheckBox) {
-                        facilityList.add((JCheckBox) component);
-                    }
+                catch (InputMismatchException exception){
+                    Helper.displayMessage("inputmismatch");
                 }
 
-                for (JCheckBox checkBox : facilityList) {
-                    if (checkBox.isSelected()) {
-                        System.out.println(checkBox.getText());
-                        selectedFacilities.add(checkBox.getText()); // Assuming checkbox text is hostel type name
-                    }
-                }
-                if(this.hotel.getHotel_id() !=0){
-                    System.out.println(this.timePeriod.getStart_date1());
-                    this.timePeriod = this.hotelManager.update(this.hotel,this.timePeriod);
-                    //this.timePeriod = this.timePeriodManager.update(this.timePeriod,this.hotel.getHotel_id());
-                }
-                else{
-                    this.timePeriod = this.hotelManager.create(this.hotel,selectedHostelTypes,selectedFacilities,timePeriod);
-                }
-                //If updated/created successfully
-                if( true){
-                    Helper.displayMessage("done");
-                    dispose();
-                }
-                else{
-                    Helper.displayMessage("error");
-                }
             }
         });
     }

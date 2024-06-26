@@ -23,7 +23,6 @@ public class UserDao {
             while (rs.next()){
                 users.add(this.mapResultSetToUser(rs));
             }
-
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -57,9 +56,8 @@ public class UserDao {
                 user = this.mapResultSetToUser(resultSet);
             }
         }
-        catch (SQLException e)
-        {
-        e.printStackTrace();
+        catch (SQLException e) {
+            e.printStackTrace();
         }
         return user;
     }

@@ -12,4 +12,7 @@ public class ComboItem {
     public String toString() {
         return this.value;
     }
+    public Integer getKey() {
+        return key;
+    }
 }

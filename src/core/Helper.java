@@ -36,7 +36,7 @@ public class Helper {
             default -> 0;
         };
     }
-
+    //It shows messages to user according to the msg code.
     public static void displayMessage(String str) {
         String msg;
         String title = switch (str) {
@@ -52,6 +52,15 @@ public class Helper {
                 msg = "User not found!";
                 yield "Login Failed!";
             }
+            case "formatmismatchdate" ->{
+                msg ="Invalid date format! Please enter 'dd/MM/yyyy' ";
+                yield "Invalid Date Format!";
+            }
+            case "inputmismatch" ->{
+                msg ="Invalid input format!";
+                yield "Invalid Input Format!";
+            }
+
             default -> {
                 msg = str;
                 yield "Message";

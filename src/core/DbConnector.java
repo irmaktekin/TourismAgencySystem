@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+//Db connection is configured
 public class DbConnector {
+
     public static final String DB_URL = "jdbc:postgresql://localhost:5432/tourismagency";
     public static final String DB_USER = "postgres";
     public static final String DB_PASSWORD = "PtYzxV123.!";
@@ -18,6 +20,8 @@ public class DbConnector {
     private DbConnector() {
         try {
             this.connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            connection.setAutoCommit(true);
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

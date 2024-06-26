@@ -42,8 +42,6 @@ public class AdminView extends Layout{
         loadUserComponent();
         loadUserFilter();
         this.table_users.setComponentPopupMenu(userMenu);
-
-
     }
     private void loadUserFilter(){
         this.cmb_role.setModel(new DefaultComboBoxModel<>(User.Role.values()));
@@ -70,7 +68,6 @@ public class AdminView extends Layout{
                     loadUserTable(null);
                 }
             });
-
 
         });
         this.userMenu.add("Update").addActionListener(e->{
@@ -103,6 +100,4 @@ public class AdminView extends Layout{
             loadUserTable(userRow);
         });
     }
-
-
 }

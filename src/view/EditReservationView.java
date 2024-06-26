@@ -3,7 +3,6 @@ package view;
 import business.ReservationManager;
 import core.Helper;
 import entity.*;
-
 import javax.swing.*;
 
 public class EditReservationView extends Layout{
@@ -37,6 +36,8 @@ public class EditReservationView extends Layout{
         this.add(container);
         this.initalizeGui(600,500);
         reservationManager = new ReservationManager();
+
+        //When create button click, reservation is created.
         btn_createres.addActionListener(e-> {
             if(Helper.isFieldListBlank(new JTextField[]{this.fld_adult_count,this.fld_child_count,this.fld_mail,this.fld_mobile,this.fld_night_count,this.fld_cust_name})){
                 Helper.displayMessage("fill");
@@ -47,12 +48,7 @@ public class EditReservationView extends Layout{
                 this.res.setAdult_count(Integer.parseInt(fld_adult_count.getText()));
                 this.res.setChild_count(Integer.parseInt(fld_child_count.getText()));
             }
-            if(this.res.getRes_id() !=0){
-                //result = this.roomManager.update(this.hotel);
-                System.out.println("update is performed");
-            }
-            else{
-                System.out.println("time period id");
+            if(this.res.getRes_id() ==0){
                 this.reservationManager.create(res,hotelId,roomId, Integer.parseInt(fld_night_count.getText()),Integer.parseInt(fld_adult_count.getText()),Integer.parseInt(fld_child_count.getText()));
             }
         });

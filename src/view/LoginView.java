@@ -33,7 +33,7 @@ public class LoginView extends Layout {
                if(user == null){
                    Helper.displayMessage("notfound");
                }
-               else if(user.getRole().equals("ACCOUNTING")){
+               else if(user.getRole().equals("EMPLOYEE")){
                    EmployeeView employeeView = new EmployeeView(user);
                }
                else{

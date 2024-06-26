@@ -11,7 +11,7 @@ public class User {
 
     public enum Role {
         ADMIN,
-        ACCOUNTING
+        EMPLOYEE
     }
 
     public User() {

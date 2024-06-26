@@ -55,9 +55,6 @@ public class EditRoomView extends  Layout{
             cmb_term.addItem(timePeriod.toString2());
         }
 
-
-
-
         btn_save_room.addActionListener(e->{
             if(Helper.isFieldListBlank(new JTextField[]{this.fld_bed,this.fld_squaremeters,this.fld_stock})){
                 Helper.displayMessage("fill");
@@ -70,15 +67,13 @@ public class EditRoomView extends  Layout{
                     this.room.setStock_count(Integer.parseInt(fld_stock.getText()));
                     this.room.setAdult_price(Float.parseFloat(adlt_price.getText()));
 
-
-// Step 1: Retrieve the selected item from JComboBox
+                    // Retrieve the selected item from JComboBox
                     Object selectedTerm = cmb_term.getSelectedItem();
 
-// Step 2: Check if the selected item is of the expected type
+                    // Check if the selected item is of the expected type
                     if (selectedTerm instanceof TimePeriod) {
                         TimePeriod selectedTimePeriod = (TimePeriod) selectedTerm;
-
-                        // Step 3: Set the time_period_id in your Room object
+                        //Set the time_period_id in your Room object
                         this.room.setTime_period_id(selectedTimePeriod.getTime_period_id());
                     } else {
                         // Handle case where the selected item is not of type TimePeriod (optional)
@@ -97,7 +92,8 @@ public class EditRoomView extends  Layout{
                         } else {
                             System.out.println("Could not map selected item to HostelType");
                         }
-                    } else {
+                    }
+                    else {
                         System.out.println("Selected item is not a String");
                     }
 
@@ -116,17 +112,14 @@ public class EditRoomView extends  Layout{
                         if (checkBox.isSelected()) {
                             String featureName = checkBox.getText();
                             selectedRoomAttributes.add(featureName);
-                            System.out.println(featureName);
                         }
                     }
-
-                    String tvAvailable = selectedRoomAttributes.contains("Tv") ? "y" : "n";
-                    String minibarAvailable = selectedRoomAttributes.contains("Minibar") ? "y" : "n";
-                    String consoleAvailable = selectedRoomAttributes.contains("Gaming Console") ? "y" : "n";
-                    String safeAvailable = selectedRoomAttributes.contains("Safe") ? "y" : "n";
-                    String projectorAvailable = selectedRoomAttributes.contains("Projection") ? "y" : "n";
-
-
+                    //Get the fields selected checkbox
+                    String tvAvailable = selectedRoomAttributes.contains("Tv") ? "Y" : "N";
+                    String minibarAvailable = selectedRoomAttributes.contains("Minibar") ? "Y" : "N";
+                    String consoleAvailable = selectedRoomAttributes.contains("Gaming Console") ? "Y" : "N";
+                    String safeAvailable = selectedRoomAttributes.contains("Safe") ? "Y" : "N";
+                    String projectorAvailable = selectedRoomAttributes.contains("Projection") ? "Y" : "N";
 
                     if (this.room.getRoom_id() != 0) {
                         //result = this.roomManager.update(this.hotel);
@@ -143,22 +136,14 @@ public class EditRoomView extends  Layout{
                         Helper.displayMessage("error");
                     }
 
-
                 } catch (NumberFormatException ex) {
                     Helper.displayMessage("inputmismatch");
                 }
             }
-
-
-
-
-    });
-
-
-
-}
+        });
+    }
     private void populateHostelTypes(int hotelId) {
-        // Get hostel types for the specific hotel from DAO
+        // Get hostel types for the specific hotel from manager
         List<HostelType> hostelTypes = roomManager.getHostelTypesForHotel(hotelId);
 
         // Create a string array to hold type names for the JComboBox
@@ -168,6 +153,8 @@ public class EditRoomView extends  Layout{
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(hostelTypeNames);
         cmb_hosteltype.setModel(model);
     }
+
+    //It gets the string value and map to Hostel Type for showing in the combobox.
     private HostelType mapStringToHostelType(String selectedHostelTypeString) {
         switch (selectedHostelTypeString) {
             case "Ultra All Inclusive":

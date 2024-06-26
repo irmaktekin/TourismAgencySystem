@@ -205,11 +205,6 @@ public class RoomDao {
                 room.setConsole_available(rs.getBoolean("console"));
                 room.setProjector_available(rs.getBoolean("projector"));
                 room.setMinibar_available(rs.getBoolean("minibar"));
-                room.setAdult_price(rs.getInt(rs.getInt("adult_price")));
-                /* room.setAdult_price(rs.getInt(rs.getInt("child_price")));
-                room.setHostel_type_id(rs.getInt("hostel_type_id"));
-                room.setHotel_id(rs.getInt("hotel_id"));*/
-
 
                 TimePeriod timePeriod = new TimePeriod();
                 timePeriod.setTime_period_id(rs.getInt("time_period_id"));

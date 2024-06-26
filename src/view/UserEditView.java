@@ -4,10 +4,8 @@ import business.UserManager;
 import core.ComboItem;
 import core.Helper;
 import entity.User;
-
 import javax.swing.*;
-import java.awt.event.HierarchyListener;
-import java.util.Arrays;
+
 
 public class UserEditView  extends Layout{
     private UserManager userManager;

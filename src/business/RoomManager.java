@@ -34,10 +34,6 @@ public class RoomManager {
             Object[] rowObject = new Object[size];
             rowObject[i++] = obj.getRoom_id();
             rowObject[i++] = obj.getHotel_id();
-            rowObject[i++] = obj.getHostel_type_id();
-            rowObject[i++] = obj.getTime_period_id();
-            rowObject[i++] = obj.getAdult_price();
-            rowObject[i++] = obj.getChild_price();
             rowObject[i++] = obj.getStock_count();
             rowObject[i++] = obj.getBed_count();
             rowObject[i++] = obj.getSquare_meters();

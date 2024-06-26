@@ -76,23 +76,29 @@ public class EmployeeView extends Layout{
         //When the search button is clicked, get the field values from UI.
         searchButton.addActionListener(e->{
             try{
-            String hotelLocation = fld_city.getText().trim();
-            String startDateText = fld_strt_room.getText();
-            DateTimeFormatter inputFormatter  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate startDate = startDateText.isEmpty() ? null : LocalDate.parse(startDateText,inputFormatter);
-            String endDateText = fld_end_room.getText();
-            LocalDate endDate = endDateText.isEmpty() ? null : LocalDate.parse(endDateText,inputFormatter);
-
-            Integer customerCount = Integer.valueOf(fld_cust_count.getText());
-
+                //Get the fields for search rooms
+                String hotelLocation = fld_city.getText().trim();
+                String startDateText = fld_strt_room.getText();
+                DateTimeFormatter inputFormatter  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate startDate = startDateText.isEmpty() ? null : LocalDate.parse(startDateText,inputFormatter);
+                String endDateText = fld_end_room.getText();
+                LocalDate endDate = endDateText.isEmpty() ? null : LocalDate.parse(endDateText,inputFormatter);
+                //if the field is not null, then parse it to integer.
+                Integer customerCount = 0;
+                if (!fld_cust_count.getText().isEmpty()) {
+                    try {
+                        customerCount = Integer.valueOf(fld_cust_count.getText());
+                    } catch (NumberFormatException exception) {
+                        exception.printStackTrace(); // Or log the error
+                    }
+                }
                 ArrayList<Room> roomList = this.roomManager.searchForTable(hotelLocation, startDate, endDate,customerCount);
                 ArrayList<Object[]> roomRowList = this.roomManager.getForTable(this.col_room.length,roomList);
                 loadRoomTable(roomRowList);
-            }catch (DateTimeParseException exception){
+            }
+            catch (DateTimeParseException exception){
                 Helper.displayMessage("formatmismatchdate");
             }
-
-
         });
     }
 
@@ -116,7 +122,7 @@ public class EmployeeView extends Layout{
     }
 
     private void loadRoomTable(ArrayList<Object[]> roomList){
-        this.col_room = new Object[]{"ID","HotelID","HostelTypeID","PeriodID","Adult","Child","Stock","Bed","Squaremeter","TV","Minibar","Console","Safe","Projector"};
+        this.col_room = new Object[]{"ID","HotelID","Stock","Bed","Squaremeter","TV","Minibar","Console","Safe","Projector"};
         if(roomList==null){
             roomList = this.roomManager.getForTable(col_room.length, this.roomManager.getAllHotels());
         }
@@ -132,7 +138,7 @@ public class EmployeeView extends Layout{
 
     private void loadRoomComponent(){
         this.roomMenu = new JPopupMenu();
-            tableRowSelect(table_rooms,roomMenu);
+        tableRowSelect(table_rooms,roomMenu);
 
         this.roomMenu.add("Create Reservation").addActionListener(e->{
             int selectedHotelId = this.getTableSelectedRow(table_rooms,1);

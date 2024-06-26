@@ -6,10 +6,8 @@ import business.TimePeriodManager;
 import core.ComboItem;
 import core.Helper;
 import entity.*;
-
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -73,7 +71,7 @@ public class HotelView extends Layout {
         setHotelStar();
         loadFacilities();
 
-        //Set fields
+        //Set fields if it is an update operation
         if(this.hotel.getHotel_id() !=0){
             this.lbl_title_hotel.setText("Edit Hotel");
             this.fld_hotel_name.setText(hotel.getHotel_name());
@@ -89,6 +87,7 @@ public class HotelView extends Layout {
             setCheckBoxesForHotel(hotel.getHotel_id());
         }
 
+        //create operation
         btn_save_hotel.addActionListener(e->{
             if(Helper.isFieldListBlank(new JTextField[]{this.fld_hotel_mail,this.fld_hotel_name,this.fld_hotel_phone,this.fld_strdate1,fld_strtdate2,fld_fnshdate1,fld_fnshdate2})){
                 Helper.displayMessage("fill");
@@ -96,6 +95,7 @@ public class HotelView extends Layout {
             else{
                 boolean result = false;
                 try{
+                    //Set the fields for creation of hotel
                     this.hotel.setHotel_name(fld_hotel_name.getText());
                     this.hotel.setStar(Integer.parseInt(cmb_star.getModel().getSelectedItem().toString()));
                     this.hotel.setPhone_number(fld_hotel_phone.getText());
@@ -139,12 +139,10 @@ public class HotelView extends Layout {
                     if(this.hotel.getHotel_id() !=0){
                         this.timePeriod = this.hotelManager.update(this.hotel,this.timePeriod);
                         result =true;
-                        //this.timePeriod = this.timePeriodManager.update(this.timePeriod,this.hotel.getHotel_id());
                     }
                     else{
                         this.timePeriod = this.hotelManager.create(this.hotel,selectedHostelTypes,selectedFacilities,timePeriod);
                         result=true;
-
                     }
 
                     //If updated/created successfully
@@ -185,6 +183,7 @@ public class HotelView extends Layout {
         }
         this.cmb_star.setModel(new DefaultComboBoxModel<>(hotelStars));
     }
+    //Set the selected facilites for UI
     private void loadFacilities() {
         List<Facility> hotelFacilities = facilityManager.getFacilitiesForHotel(hotel.getHotel_id());
         for (Component component : cnt_facility.getComponents()) {
@@ -221,7 +220,6 @@ public class HotelView extends Layout {
                     // Add cases for other hostel type IDs and checkboxes...
                 }
             }
-
     }
 }
 

@@ -6,12 +6,12 @@ The Hotel Management System is a Java Swing application designed to facilitate t
 Features
 Hotel Management:
 
-Create new hotels with details such as name, address, contact information, etc.
+Create new hotels with details such as name, address, hostel type information, etc.
 Update existing hotel details.
 Delete hotels from the system.
 Room Management:
 
-Add rooms to hotels with specific details like room type, bed count, amenities, etc.
+Add rooms to hotels with specific details like room type, bed count, stock_count, etc.
 Update room details within a hotel.
 Remove rooms from a hotel.
 Reservation Management:

@@ -21,7 +21,6 @@ public class AdminView extends Layout{
     private JLabel lbl_userrole;
     private JComboBox cmb_role;
     private JButton btn_search;
-    private JButton btn_clear;
     private User user;
     private Object[] col_user;
     private UserManager userManager;

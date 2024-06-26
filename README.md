@@ -1,7 +1,6 @@
 # TourismAgencySystem
 Hotel Management System
 
-
 The Hotel Management System is a Java Swing application designed to facilitate the management of hotels, rooms, and reservations. It allows users to perform CRUD (Create, Read, Update, Delete) operations on hotels, manage rooms within each hotel, and make reservations for these rooms.
 
 Features
@@ -13,13 +12,13 @@ Delete hotels from the system.
 Room Management:
 
 Add rooms to hotels with specific details like room type, bed count, stock_count, etc.
-Update room details within a hotel.
-Remove rooms from a hotel.
+
 Reservation Management:
 
 Make reservations for rooms in hotels for specified dates.
-View existing reservations.
+View existing reservations according to address, terms and guest count.
 Cancel reservations if needed.
+
 Technologies Used
 Java: Core programming language.
 Swing: GUI toolkit for building the application's graphical interface.
@@ -46,20 +45,3 @@ Using the Application:
 Upon launching the application, you'll see a GUI with options to manage hotels, rooms, and reservations.
 Navigate through the different functionalities using the menu or buttons provided.
 Create hotels, add rooms to them, and make reservations to see how the system operates.
-Screenshots
-Include screenshots of the application's interface to give users a visual understanding of how it looks and works.
-
-Dependencies
-List any external libraries or dependencies used in your project, if applicable.
-
-Known Issues
-Document any known bugs or issues that users may encounter.
-
-Future Enhancements
-Describe potential future features or improvements that could be made to the application.
-
-Contributing
-Provide instructions for how others can contribute to the project, such as reporting bugs, suggesting enhancements, or submitting pull requests.
-
-License
-Specify the license under which your project is distributed.

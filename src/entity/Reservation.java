@@ -4,6 +4,25 @@ public class Reservation {
     private int res_id;
     private int hotel_id;
     private String customer_name;
+    private int nightCount;
+
+    public int getNightCount() {
+        return nightCount;
+    }
+
+    public void setNightCount(int nightCount) {
+        this.nightCount = nightCount;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String email;
 
     public void setChild_count(Integer child_count) {
         this.child_count = child_count;

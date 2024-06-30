@@ -54,27 +54,35 @@ public class EditReservationView extends Layout{
                 Helper.displayMessage("fill");
             }
             else{
+
                 this.res.setCustomer_name(fld_cust_name.getText());
                 this.res.setMobile_phone(fld_mobile.getText());
+                this.res.setNightCount(Integer.parseInt(fld_night_count.getText()));
                 this.res.setAdult_count(Integer.parseInt(fld_adult_count.getText()));
                 this.res.setChild_count(Integer.parseInt(fld_child_count.getText()));
-            }
-            System.out.println("selectedresId"+selectedResId);
-            if(selectedResId == 0){
-                this.reservationManager.create(res,hotelId,roomId, Integer.parseInt(fld_night_count.getText()),Integer.parseInt(fld_adult_count.getText()),Integer.parseInt(fld_child_count.getText()));
-                result = true;
-            }
-            else{
-                this.reservationManager.update(selectedResId,res);
-                result = true;
+                this.res.setEmail(fld_mail.getText());
+                this.res.setRoomId(roomId);
+                this.res.setHotel_id(hotelId);
 
+
+                if(selectedResId == 0){
+                    System.out.println();
+                    this.reservationManager.create(res,hotelId,roomId, fld_cust_name.getText(),Integer.parseInt(fld_night_count.getText()),Integer.parseInt(fld_adult_count.getText()),Integer.parseInt(fld_child_count.getText()),fld_mail.getText());
+                    result = true;
+                }
+                else{
+                    this.reservationManager.update(selectedResId,res);
+                    result = true;
+
+                }
+                if (result) {
+                    Helper.displayMessage("done");
+                    this.dispose();
+                } else {
+                    Helper.displayMessage("error");
+                }
             }
-            if (result) {
-                Helper.displayMessage("done");
-                this.dispose();
-            } else {
-                Helper.displayMessage("error");
-            }
+
         });
 
     }

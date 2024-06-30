@@ -109,9 +109,14 @@ public class EmployeeView extends Layout{
         this.resMenu.add("Delete Reservation").addActionListener(e->{
             if(Helper.confirm("Do you want to delete this record?")){
                 int selectedResId = this.getTableSelectedRow(table_res,0);
-                if(this.reservationManager.deleteById(selectedResId)){
+                int selectedRoomId = this.getTableSelectedRow(table_res,2);
+                System.out.println(selectedRoomId);
+
+                if(this.reservationManager.deleteById(selectedResId,selectedRoomId)){
+                    System.out.println("resid"+selectedResId);
                     Helper.displayMessage("done");
                     loadReservationTable(null);
+                    loadRoomTable(null);
                 }
                 else{
                     Helper.displayMessage("error");
@@ -163,12 +168,13 @@ public class EmployeeView extends Layout{
             editReservationView.addWindowListener(new WindowAdapter() {
                 public void windowClosed(WindowEvent e) {
                     loadReservationTable(null);
+                    loadRoomTable(null);
                 }
             });
         });
     }
     private void loadReservationTable(ArrayList<Object[]> resList){
-        this.col_res = new Object[]{"ID","HotelID","Customer Name","Customer Mobile","Adult Count","Child Count","Total Price","Room ID"};
+        this.col_res = new Object[]{"ID","HotelID","Room ID","Customer Name","Customer Mobile","Child Count","Adult Count","Night Count","Total Price","Email"};
         if(resList==null){
             resList = this.reservationManager.getForTable(col_res.length, this.reservationManager.getAllReservations());
         }

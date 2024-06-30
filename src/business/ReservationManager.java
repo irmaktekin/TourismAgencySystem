@@ -21,21 +21,24 @@ public class ReservationManager {
             Object[] rowObject = new Object[size];
             rowObject[i++] = obj.getRes_id();
             rowObject[i++] = obj.getHotel_id();
+            rowObject[i++] = obj.getRoomId();
             rowObject[i++] = obj.getCustomer_name();
             rowObject[i++] = obj.getMobile_phone();
             rowObject[i++] = obj.getChild_count();
             rowObject[i++] = obj.getAdult_count();
+            rowObject[i++] = obj.getNightCount();
             rowObject[i++] = obj.getTotal_price();
+            rowObject[i++] = obj.getEmail();
             res_List.add(rowObject);
 
         }
         return res_List;
     }
-    public boolean create(Reservation res, int hotelId,int roomId,int nightCount, int child_price,int adult_price){
-        return this.resDao.createReservation(res, hotelId,roomId,nightCount,child_price,adult_price);
+    public boolean create(Reservation res, int hotelId,int roomId,String custName,int nightCount, int child_price,int adult_price,String email){
+        return this.resDao.createReservation(res, hotelId,roomId,custName,nightCount,child_price,adult_price,email);
     }
-    public boolean deleteById(int id) {
-        return this.resDao.deleteById(id);
+    public boolean deleteById(int id,int roomId) {
+        return this.resDao.deleteById(id,roomId);
     }
     public boolean update(int selectedResId, Reservation res) {
         return this.resDao.updateReservation(res,selectedResId);

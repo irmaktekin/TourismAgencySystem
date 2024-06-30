@@ -4,9 +4,27 @@ public class Reservation {
     private int res_id;
     private int hotel_id;
     private String customer_name;
+
+    public void setChild_count(Integer child_count) {
+        this.child_count = child_count;
+    }
+
+    public void setAdult_count(Integer adult_count) {
+        this.adult_count = adult_count;
+    }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
     private String mobile_phone;
-    private int child_count;
-    private int adult_count;
+    private Integer child_count;
+    private Integer adult_count;
+    private int roomId;
 
     public float getTotal_price() {
         return total_price;
@@ -37,7 +55,7 @@ public class Reservation {
         this.res_id = res_id;
     }
 
-    public int getAdult_count() {
+    public Integer getAdult_count() {
         return adult_count;
     }
 
@@ -45,7 +63,7 @@ public class Reservation {
         this.adult_count = adult_count;
     }
 
-    public int getChild_count() {
+    public Integer getChild_count() {
         return child_count;
     }
 

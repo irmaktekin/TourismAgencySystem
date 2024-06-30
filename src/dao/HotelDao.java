@@ -160,11 +160,6 @@ public class HotelDao {
                         " Values (?,?,?,?,?)";
 
             try {
-                System.out.println("Hotel ID: " + hotel.getHotel_id());
-                System.out.println("Start Date 1: " + timePeriod.getStart_date1());
-                System.out.println("End Date 1: " + timePeriod.getEnd_date1());
-                System.out.println("Start Date 2: " + timePeriod.getStart_date2());
-                System.out.println("End Date 2: " + timePeriod.getEnd_date2());
                 PreparedStatement timePeriodQuery  = connection.prepareStatement(queryTimePeriod);
                 timePeriodQuery.setInt(1,hotel.getHotel_id());
                 timePeriodQuery.setDate(2, Date.valueOf(timePeriod.getStart_date1()));

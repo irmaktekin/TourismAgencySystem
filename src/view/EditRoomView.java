@@ -49,7 +49,6 @@ public class EditRoomView extends  Layout{
         populateHostelTypes(hotelId);
         //retrive the time periods
         List<TimePeriod> timePeriods = roomManager.getTimePeriodsForHotel(hotelId);
-        System.out.println(timePeriods.size());
         for (TimePeriod timePeriod : timePeriods) {
             cmb_term.addItem(timePeriod);
             cmb_term.addItem(timePeriod.toString2());
@@ -125,7 +124,6 @@ public class EditRoomView extends  Layout{
                         //result = this.roomManager.update(this.hotel);
                         System.out.println("update is performed");
                     } else {
-                        System.out.println(tvAvailable);
                         result = this.roomManager.create(room, hotelId, room.getTime_period_id(),tvAvailable, minibarAvailable, consoleAvailable, safeAvailable, projectorAvailable);
                     }
                     //If updated/created successfully

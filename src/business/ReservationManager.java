@@ -1,10 +1,7 @@
 package business;
 
-import dao.HotelDao;
 import dao.ReservationDao;
-import entity.Hotel;
 import entity.Reservation;
-import entity.Room;
 
 import java.util.ArrayList;
 
@@ -39,6 +36,12 @@ public class ReservationManager {
     }
     public boolean deleteById(int id) {
         return this.resDao.deleteById(id);
+    }
+    public boolean update(int selectedResId, Reservation res) {
+        return this.resDao.updateReservation(res,selectedResId);
+    }
+    public Reservation getById(int id) {
+        return this.resDao.getById(id);
     }
 
 }

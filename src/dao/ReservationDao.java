@@ -1,5 +1,6 @@
 package dao;
 import core.DbConnector;
+import entity.Hotel;
 import entity.Reservation;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,6 +31,7 @@ public class ReservationDao {
     public Reservation mapToReservation(ResultSet rs) throws SQLException {
         Reservation res = new Reservation();
         res.setRes_id(rs.getInt("reservation_id"));
+        res.setRoomId(rs.getInt("room_id"));
         res.setHotel_id(rs.getInt("hotel_id"));
         res.setCustomer_name(rs.getString("customer_name"));
         res.setMobile_phone(rs.getString("customer_mobile"));
@@ -49,9 +51,10 @@ public class ReservationDao {
                 "customer_mobile, " +
                 "child_count, " +
                 "adult_count, " +
-                "total_price" +
+                "total_price , " +
+                "room_id" +
                 ")"+
-                " Values (?,?,?,?,?,?)";
+                " Values (?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement priceStatement = connection.prepareStatement(roomPriceQuery);
@@ -75,6 +78,7 @@ public class ReservationDao {
             pr.setInt(4, res.getChild_count());
             pr.setInt(5,res.getAdult_count());
             pr.setFloat(6,totalPrice);
+            pr.setInt(7,roomId);
             updateRoomStock(roomId);
 
             return pr.executeUpdate() != -1;
@@ -97,7 +101,7 @@ public class ReservationDao {
         }
     }
     public boolean deleteById(int id){
-        String query = "Delete From public.reservation Where hotel_id = ?";
+        String query = "Delete From public.reservation Where reservation_id = ?";
         try{
             PreparedStatement pr = connection.prepareStatement(query);
             pr.setInt(1,id);
@@ -108,4 +112,60 @@ public class ReservationDao {
         }
         return true;
     }
+    public boolean updateReservation(Reservation reservation,int selectedResId){
+        String query = "Update public.reservation Set " +
+                "hotel_id = ? , " +
+                "customer_name = ? , " +
+                "customer_mobile = ? , " +
+                "child_count = ? , " +
+                "adult_count = ? , " +
+                "total_price = ? " +
+                "Where reservation_id = ?";
+        try{
+            PreparedStatement pr = connection.prepareStatement(query);
+            pr.setInt(1,reservation.getHotel_id());
+            pr.setString(2,reservation.getCustomer_name());
+            pr.setString(3,reservation.getMobile_phone());
+            pr.setInt(4,reservation.getChild_count());
+            pr.setInt(5,reservation.getAdult_count());
+            pr.setFloat(6,reservation.getTotal_price());
+            pr.setInt(7,selectedResId);
+            return pr.executeUpdate() != -1;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return true;
+    }
+    public Reservation getById(int id){
+        Reservation resObject = null;
+        String query = "Select * From public.reservation where reservation_id = ?";
+        try{
+            PreparedStatement pr = connection.prepareStatement(query);
+            pr.setInt(1,id);
+            ResultSet rs = pr.executeQuery();
+            if(rs.next()) resObject = this.mapResultSetReservation(rs);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return resObject;
+    }
+    public Reservation mapResultSetReservation(ResultSet rs){
+        Reservation reservation = new Reservation();
+        try{
+            reservation.setHotel_id(rs.getInt("hotel_id"));
+            reservation.setCustomer_name(rs.getString("customer_name"));
+            reservation.setMobile_phone(rs.getString("customer_mobile"));
+            reservation.setChild_count(rs.getInt("child_count"));
+            reservation.setAdult_count(rs.getInt("adult_count"));
+
+
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return reservation;
+    }
+
 }

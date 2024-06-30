@@ -132,7 +132,6 @@ public class HotelView extends Layout {
 
                     for (JCheckBox checkBox : facilityList) {
                         if (checkBox.isSelected()) {
-                            System.out.println(checkBox.getText());
                             selectedFacilities.add(checkBox.getText()); // Assuming checkbox text is hostel type name
                         }
                     }
@@ -200,11 +199,7 @@ public class HotelView extends Layout {
     }
 
     private void setCheckBoxesForHotel(int hotelId) throws SQLException {
-        System.out.println("checkbox");
             List<Integer> hostelTypeIds = hotelManager.getHostelTypesForHotel(hotelId);
-            for(Integer i : hostelTypeIds){
-                System.out.println(i);
-            }
 
             for (Integer hostelTypeId : hostelTypeIds) {
                 switch (hostelTypeId) {
@@ -217,7 +212,14 @@ public class HotelView extends Layout {
                     case 3:
                         roomBreakfastCheckBox.setSelected(true);
                         break;
-                    // Add cases for other hostel type IDs and checkboxes...
+                    case 4:
+                        fullHostelCheckBox.setSelected(true);
+                    case 5:
+                        halfBoardCheckBox.setSelected(true);
+                    case 6:
+                        chck_onlybed.setSelected(true);
+                    case 7:
+                        fullCreditAlcoholExclusiveCheckBox.setSelected(true);
                 }
             }
     }

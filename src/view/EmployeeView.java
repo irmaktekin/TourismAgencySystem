@@ -72,6 +72,7 @@ public class EmployeeView extends Layout{
 
         this.table_hotels.setComponentPopupMenu(hotelMenu);
         this.table_rooms.setComponentPopupMenu(roomMenu);
+        this.table_res.setComponentPopupMenu(resMenu);
 
         //When the search button is clicked, get the field values from UI.
         searchButton.addActionListener(e->{
@@ -105,19 +106,33 @@ public class EmployeeView extends Layout{
     private void loadReservationComponent() {
         this.resMenu = new JPopupMenu();
         tableRowSelect(table_res,resMenu);
-        this.roomMenu.add("Delete Reservation").addActionListener(e->{
+        this.resMenu.add("Delete Reservation").addActionListener(e->{
             if(Helper.confirm("Do you want to delete this record?")){
                 int selectedResId = this.getTableSelectedRow(table_res,0);
                 if(this.reservationManager.deleteById(selectedResId)){
                     Helper.displayMessage("done");
                     loadReservationTable(null);
-                    loadRoomTable(null);
-                    loadHotelTable(null);
                 }
                 else{
                     Helper.displayMessage("error");
                 }
             }
+        });
+        this.resMenu.add("Update Reservation").addActionListener(e->{
+            int selectedResId = this.getTableSelectedRow(table_res,0);
+            int selectedHotelId = this.getTableSelectedRow(table_res,1);
+
+            EditReservationView resView = null;
+            System.out.println(selectedResId);
+            resView = new EditReservationView(new User(),timePeriod,new Room(),reservationManager.getById(selectedResId),0,0,selectedResId);
+
+            resView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    //Reload the user table after dispose of the edit view
+                    loadReservationTable(null);
+                }
+            });
         });
     }
 
@@ -144,17 +159,16 @@ public class EmployeeView extends Layout{
             int selectedHotelId = this.getTableSelectedRow(table_rooms,1);
             int selectedRoomId = this.getTableSelectedRow(table_rooms,0);
 
-            EditReservationView editReservationView = new EditReservationView(new User(),timePeriod,new Room(),new Reservation(),selectedHotelId,selectedRoomId);
+            EditReservationView editReservationView = new EditReservationView(new User(),timePeriod,new Room(),new Reservation(),selectedHotelId,selectedRoomId,0);
             editReservationView.addWindowListener(new WindowAdapter() {
                 public void windowClosed(WindowEvent e) {
-                    dispose();
                     loadReservationTable(null);
                 }
             });
         });
     }
     private void loadReservationTable(ArrayList<Object[]> resList){
-        this.col_res = new Object[]{"ID","HotelID","Customer Name","Customer Mobile","Adult Count","Child Count","Total Price"};
+        this.col_res = new Object[]{"ID","HotelID","Customer Name","Customer Mobile","Adult Count","Child Count","Total Price","Room ID"};
         if(resList==null){
             resList = this.reservationManager.getForTable(col_res.length, this.reservationManager.getAllReservations());
         }

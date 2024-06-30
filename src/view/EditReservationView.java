@@ -45,6 +45,8 @@ public class EditReservationView extends Layout{
             this.fld_child_count.setText(res.getChild_count().toString());
             this.fld_adult_count.setText(res.getAdult_count().toString());
             this.fld_mobile.setText(res.getMobile_phone());
+            this.fld_mail.setText(res.getEmail());
+            this.fld_night_count.setText(res.getNightCount().toString());
         }
 
         //When create button click, reservation is created.

@@ -136,26 +136,24 @@ public class ReservationDao {
 
     public boolean updateReservation(Reservation reservation,int selectedResId){
         String query = "Update public.reservation Set " +
-                "hotel_id = ? , " +
                 "customer_name = ? , " +
                 "customer_mobile = ? , " +
                 "child_count = ? , " +
                 "adult_count = ? , " +
                 "night_count = ? , " +
                 "total_price = ? , " +
-                "e_mail = ?" +
+                "email = ?" +
                 "Where reservation_id = ?";
         try{
             PreparedStatement pr = connection.prepareStatement(query);
-            pr.setInt(1,reservation.getHotel_id());
-            pr.setString(2,reservation.getCustomer_name());
-            pr.setString(3,reservation.getMobile_phone());
-            pr.setInt(4,reservation.getChild_count());
-            pr.setInt(5,reservation.getAdult_count());
-            pr.setInt(6,reservation.getNightCount());
-            pr.setFloat(7,reservation.getTotal_price());
-            pr.setString(8,reservation.getEmail());
-            pr.setInt(9,selectedResId);
+            pr.setString(1,reservation.getCustomer_name());
+            pr.setString(2,reservation.getMobile_phone());
+            pr.setInt(3,reservation.getChild_count());
+            pr.setInt(4,reservation.getAdult_count());
+            pr.setInt(5,reservation.getNightCount());
+            pr.setFloat(6,reservation.getTotal_price());
+            pr.setString(7,reservation.getEmail());
+            pr.setInt(8,selectedResId);
             return pr.executeUpdate() != -1;
         }
         catch (SQLException e){
@@ -188,6 +186,7 @@ public class ReservationDao {
             reservation.setRoomId(rs.getInt("room_id"));
             reservation.setTotal_price(rs.getInt("total_price"));
             reservation.setEmail(rs.getString("email"));
+            reservation.setNightCount(rs.getInt("night_count"));
 
 
         }

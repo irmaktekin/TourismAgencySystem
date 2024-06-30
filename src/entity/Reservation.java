@@ -4,13 +4,13 @@ public class Reservation {
     private int res_id;
     private int hotel_id;
     private String customer_name;
-    private int nightCount;
+    private Integer nightCount;
 
-    public int getNightCount() {
+    public Integer getNightCount() {
         return nightCount;
     }
 
-    public void setNightCount(int nightCount) {
+    public void setNightCount(Integer nightCount) {
         this.nightCount = nightCount;
     }
 

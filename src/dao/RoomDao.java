@@ -162,6 +162,9 @@ public class RoomDao {
         if(hotelLocation != null && !hotelLocation.isEmpty()){
             conditions.add("h.address = ?");
         }
+       /* if(hotelName != null && !hotelName.isEmpty()){
+            conditions.add("h.hotel_name = ?");
+        }*/
         if(customerCount>0){
             conditions.add("r.bed_count >= ?");
         }

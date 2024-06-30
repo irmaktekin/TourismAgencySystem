@@ -35,6 +35,7 @@ public class EmployeeView extends Layout{
     private JPanel pnl_reservations;
     private JScrollPane scrl_res;
     private JTable table_res;
+    private JTextField fld_hotelname;
     private Object[] col_hotel;
     private Object[] col_room;
     private Object[] col_res;

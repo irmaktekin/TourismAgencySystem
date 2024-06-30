@@ -10,13 +10,9 @@ public class EditReservationView extends Layout{
     private JTextField fld_mobile;
     private JTextField fld_mail;
     private JPanel container;
-    private JLabel lbl_reservation;
-    private JLabel lbl_night_count;
     private JTextField fld_night_count;
-    private JLabel count_child;
     private JTextField fld_child_count;
     private JTextField fld_adult_count;
-    private JPanel pnl_details;
     private JButton btn_createres;
     private JTextField fld_total_price;
     private  User user;
@@ -36,7 +32,7 @@ public class EditReservationView extends Layout{
         this.roomId = roomId;
         this.resId = selectedResId;
         this.add(container);
-        this.initalizeGui(600,500);
+        this.initalizeGui(600,300);
         reservationManager = new ReservationManager();
 
         //set the field values for update

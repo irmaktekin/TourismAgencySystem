@@ -53,8 +53,8 @@ public class EditReservationView extends Layout{
             this.fld_res_end.setText(res.getEnd_date());
 
 
-            LocalDate parsedDateStart = LocalDate.parse(fld_res_start_date.getText(),outputFormatter);
-            LocalDate parsedDateEnd = LocalDate.parse(fld_res_end.getText(),outputFormatter);
+            LocalDate parsedDateStart = LocalDate.parse(fld_res_start_date.getText(),inputFormatter);
+            LocalDate parsedDateEnd = LocalDate.parse(fld_res_end.getText(),inputFormatter);
 
             String formattedDateStart = parsedDateStart.format(outputFormatter);
             String formattedDateEnd= parsedDateEnd.format(outputFormatter);

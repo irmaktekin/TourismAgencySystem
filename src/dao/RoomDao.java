@@ -1,3 +1,4 @@
+
 package dao;
 
 import core.DbConnector;
@@ -122,8 +123,8 @@ public class RoomDao {
     public List<HostelType> getHostelTypesForHotel(int hotelId) {
         List<HostelType> hostelTypes = new ArrayList<>();
         String query = "SELECT ht.hostel_type_id, ht.hostel_type_name FROM hostel_type ht " +
-                        "JOIN hotel_hostel_type hht ON ht.hostel_type_id = hht.hostel_type_id " +
-                        "WHERE hht.hotel_id = ?";
+                "JOIN hotel_hostel_type hht ON ht.hostel_type_id = hht.hostel_type_id " +
+                "WHERE hht.hotel_id = ?";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
@@ -135,7 +136,7 @@ public class RoomDao {
                 String typeName = rs.getString("hostel_type_name");
                 HostelType hostelType = mapToHostelType(typeName);
                 hostelTypes.add(hostelType);
-                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -151,14 +152,15 @@ public class RoomDao {
         return null; // Return null if no matching enum constant is found
     }
 
-    public ArrayList<Room> searchForReservation(String hotelLocation, LocalDate startDate, LocalDate endDate,int customerCount,String hotelName) {
+    public ArrayList<Room> searchForReservation(String hotelLocation, LocalDate startDate, LocalDate endDate,Integer customerCount,String hotelName) {
         int parameterIndex = 1;
+        System.out.println(customerCount);
         ArrayList<Room> rooms = new ArrayList<>();
         List<String> conditions = new ArrayList<>();
         String query = "SELECT r.*, tp.*, h.address, h.hotel_name " +
-                        "FROM room r " +
-                        "INNER JOIN public.hotel h ON r.hotel_id = h.hotel_id " +
-                        "INNER JOIN public.hotel_time_period tp ON h.hotel_id = tp.hotel_id";
+                "FROM room r " +
+                "INNER JOIN public.hotel h ON r.hotel_id = h.hotel_id " +
+                "INNER JOIN public.hotel_time_period tp ON h.hotel_id = tp.hotel_id";
 
         if(hotelLocation != null && !hotelLocation.isEmpty()){
             conditions.add("h.address = ?");
@@ -187,20 +189,23 @@ public class RoomDao {
             if(hotelLocation!=null && !hotelLocation.isEmpty()){
                 st.setString(parameterIndex++,hotelLocation);
             }
+            System.out.println(startDate);
             if(startDate!=null){
                 st.setDate(parameterIndex++,java.sql.Date.valueOf(startDate));
                 st.setDate(parameterIndex++, java.sql.Date.valueOf(startDate)); // Second parameter for start_date2
 
             }
+
             if(endDate!=null){
                 st.setDate(parameterIndex++,java.sql.Date.valueOf(endDate));
                 st.setDate(parameterIndex++, java.sql.Date.valueOf(endDate)); // Second parameter for start_date2
 
             }
-            if(hotelName!=null){
+
+           if(hotelName!=null && !hotelName.isEmpty()){
                 st.setString(parameterIndex++,hotelName);
             }
-
+            System.out.println(query);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Room room = new Room();
@@ -232,4 +237,3 @@ public class RoomDao {
         return rooms;
     }
 }
-

@@ -199,31 +199,28 @@ public class HotelView extends Layout {
     }
 
     private void setCheckBoxesForHotel(int hotelId) throws SQLException {
-            List<Integer> hostelTypeIds = hotelManager.getHostelTypesForHotel(hotelId);
+        List<Integer> hostelTypeIds = hotelManager.getHostelTypesForHotel(hotelId);
 
-            for (Integer hostelTypeId : hostelTypeIds) {
-                switch (hostelTypeId) {
-                    case 1:
-                        ultraAllInclusiveCheckBox.setSelected(true);
-                        break;
-                    case 2:
-                        allInclusiveCheckBox.setSelected(true);
-                        break;
-                    case 3:
-                        roomBreakfastCheckBox.setSelected(true);
-                        break;
-                    case 4:
-                        fullHostelCheckBox.setSelected(true);
-                    case 5:
-                        halfBoardCheckBox.setSelected(true);
-                    case 6:
-                        chck_onlybed.setSelected(true);
-                    case 7:
-                        fullCreditAlcoholExclusiveCheckBox.setSelected(true);
-                }
+        for (Integer hostelTypeId : hostelTypeIds) {
+            switch (hostelTypeId) {
+                case 1:
+                    ultraAllInclusiveCheckBox.setSelected(true);
+                    break;
+                case 2:
+                    allInclusiveCheckBox.setSelected(true);
+                    break;
+                case 3:
+                    roomBreakfastCheckBox.setSelected(true);
+                    break;
+                case 4:
+                    fullHostelCheckBox.setSelected(true);
+                case 5:
+                    halfBoardCheckBox.setSelected(true);
+                case 6:
+                    chck_onlybed.setSelected(true);
+                case 7:
+                    fullCreditAlcoholExclusiveCheckBox.setSelected(true);
             }
+        }
     }
 }
-
-
-

@@ -116,15 +116,15 @@ public class HotelDao {
             int rowInserted = pr.executeUpdate();
 
             ResultSet generatedKeys = pr.getGeneratedKeys();
-                int hotelId ;
-                if (generatedKeys.next()) {
-                    hotelId = generatedKeys.getInt(1);
-                    hotel.setHotel_id(hotelId);
-                    // Set the hotel_id in your Hotel object
-                    hotel.setHotel_id(hotelId);
-                } else {
-                    throw new SQLException("Failed to get auto-generated hotel_id.");
-                }
+            int hotelId ;
+            if (generatedKeys.next()) {
+                hotelId = generatedKeys.getInt(1);
+                hotel.setHotel_id(hotelId);
+                // Set the hotel_id in your Hotel object
+                hotel.setHotel_id(hotelId);
+            } else {
+                throw new SQLException("Failed to get auto-generated hotel_id.");
+            }
 
             for(String hostelTypeName : selectedHostelTypes){
                 prHostelType.setString(1,hostelTypeName);
@@ -157,7 +157,7 @@ public class HotelDao {
                     "start_date2, "+
                     "end_date2" +
                     ")"+
-                        " Values (?,?,?,?,?)";
+                    " Values (?,?,?,?,?)";
 
             try {
                 PreparedStatement timePeriodQuery  = connection.prepareStatement(queryTimePeriod);

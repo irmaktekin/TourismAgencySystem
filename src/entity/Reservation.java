@@ -4,15 +4,26 @@ public class Reservation {
     private int res_id;
     private int hotel_id;
     private String customer_name;
-    private Integer nightCount;
+    private String start_date;
 
-    public Integer getNightCount() {
-        return nightCount;
+    public String getEnd_date() {
+        return end_date;
     }
 
-    public void setNightCount(Integer nightCount) {
-        this.nightCount = nightCount;
+    public void setEnd_date(String end_date) {
+        this.end_date = end_date;
     }
+
+    public String getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(String start_date) {
+        this.start_date = start_date;
+    }
+
+    private String end_date;
+
 
     public String getEmail() {
         return email;
@@ -45,15 +56,15 @@ public class Reservation {
     private Integer adult_count;
     private int roomId;
 
-    public float getTotal_price() {
+    public double getTotal_price() {
         return total_price;
     }
 
-    public void setTotal_price(float total_price) {
+    public void setTotal_price(double total_price) {
         this.total_price = total_price;
     }
 
-    private float total_price;
+    private double total_price;
 
     public String getMobile_phone() {
         return mobile_phone;

@@ -176,7 +176,7 @@ public class EmployeeView extends Layout{
         });
     }
     private void loadReservationTable(ArrayList<Object[]> resList){
-        this.col_res = new Object[]{"ID","HotelID","Room ID","Customer Name","Customer Mobile","Child Count","Adult Count","Night Count","Total Price","Email"};
+        this.col_res = new Object[]{"ID","HotelID","Room ID","Customer Name","Customer Mobile","Child Count","Adult Count","Total Price","Email","Start","End"};
         if(resList==null){
             resList = this.reservationManager.getForTable(col_res.length, this.reservationManager.getAllReservations());
         }

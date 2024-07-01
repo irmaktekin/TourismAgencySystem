@@ -2,10 +2,11 @@ package dao;
 import core.DbConnector;
 import entity.Hotel;
 import entity.Reservation;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class ReservationDao {
@@ -37,13 +38,17 @@ public class ReservationDao {
         res.setMobile_phone(rs.getString("customer_mobile"));
         res.setChild_count(rs.getInt("child_count"));
         res.setAdult_count(rs.getInt("adult_count"));
-        res.setNightCount(rs.getInt("night_count"));
-        res.setTotal_price(rs.getInt("total_price"));
+        res.setTotal_price(rs.getFloat("total_price"));
         res.setEmail(rs.getString("email"));
+        res.setStart_date(rs.getString("reservation_start"));
+        res.setEnd_date(rs.getString("reservation_end"));
+
 
         return res;
     }
-    public boolean createReservation (Reservation res, int hotelId,int roomId,String custname,int nightCount,int childCount,int adultCount,String email){
+    public boolean createReservation (Reservation res, int hotelId, int roomId, String custname, int childCount, int adultCount, String email, LocalDate startDate, LocalDate endDate){
+        int nightCount = 0;
+        nightCount = (int)ChronoUnit.DAYS.between(startDate, endDate);
 
         //calculate the price according to the night,child, adult count.
         String roomPriceQuery = "SELECT adult_price, child_price FROM room WHERE room_id = ?";
@@ -55,11 +60,12 @@ public class ReservationDao {
                 "customer_mobile, " +
                 "child_count, " +
                 "adult_count, " +
-                "night_count, " +
                 "total_price , " +
-                "email"+
+                "email, "+
+                "reservation_start, "+
+                "reservation_end"+
                 ")"+
-                " Values (?,?,?,?,?,?,?,?,?)";
+                " Values (?,?,?,?,?,?,?,?,?,?)";
 
         try {
 
@@ -67,8 +73,8 @@ public class ReservationDao {
             priceStatement.setInt(1, roomId);
             ResultSet priceResultSet = priceStatement.executeQuery();
             //calculate the total price with the room price, guest count and the night count.
-            float roomPriceAdult = 0.0f;
-            float roomPriceChild = 0.0f;
+            double roomPriceAdult = 0.0f;
+            double roomPriceChild = 0.0f;
             if (priceResultSet.next()) {
                 roomPriceAdult = priceResultSet.getFloat("adult_price") ;
                 roomPriceChild = priceResultSet.getFloat("child_price") ;
@@ -76,19 +82,20 @@ public class ReservationDao {
             } else {
                 throw new SQLException("Room with ID " + roomId + " not found or price is not available.");
             }
-            float totalPrice = ((roomPriceAdult*adultCount)+(roomPriceChild*childCount))*nightCount;
+            double totalPrice = ((roomPriceAdult*adultCount)+(roomPriceChild*childCount))*nightCount;
             PreparedStatement pr  = connection.prepareStatement(query);
             pr.setInt(1,hotelId);
-            System.out.println("hotelid"+hotelId);
             pr.setInt(2,roomId);
-            System.out.println("roomId"+roomId);
             pr.setString(3,custname);
             pr.setString(4,res.getMobile_phone());
             pr.setInt(5, childCount);
             pr.setInt(6,adultCount);
-            pr.setInt(7,nightCount);
-            pr.setFloat(8,totalPrice);
-            pr.setString(9,email);
+            pr.setDouble(7,totalPrice);
+            pr.setString(8,email);
+            pr.setString(9, String.valueOf(startDate));
+            pr.setString(10, String.valueOf(endDate));
+
+
             updateRoomStock(roomId);
 
             return pr.executeUpdate() != -1;
@@ -136,26 +143,31 @@ public class ReservationDao {
         }
     }
 
-    public boolean updateReservation(Reservation reservation,int selectedResId){
+    public boolean updateReservation(Reservation reservation,int selectedResId,LocalDate startDate,LocalDate endDate){
         String query = "Update public.reservation Set " +
                 "customer_name = ? , " +
                 "customer_mobile = ? , " +
                 "child_count = ? , " +
                 "adult_count = ? , " +
-                "night_count = ? , " +
                 "total_price = ? , " +
-                "email = ?" +
+                "email = ? , "+
+                "reservation_start = ? , "+
+                "reservation_end = ?"+
                 "Where reservation_id = ?";
         try{
+
+
             PreparedStatement pr = connection.prepareStatement(query);
             pr.setString(1,reservation.getCustomer_name());
             pr.setString(2,reservation.getMobile_phone());
             pr.setInt(3,reservation.getChild_count());
             pr.setInt(4,reservation.getAdult_count());
-            pr.setInt(5,reservation.getNightCount());
-            pr.setFloat(6,reservation.getTotal_price());
-            pr.setString(7,reservation.getEmail());
-            pr.setInt(8,selectedResId);
+            pr.setDouble(5,reservation.getTotal_price());
+            pr.setString(6,reservation.getEmail());
+            pr.setString(7, String.valueOf(startDate));
+            pr.setString(8, String.valueOf(endDate));
+            pr.setInt(9,selectedResId);
+
             return pr.executeUpdate() != -1;
         }
         catch (SQLException e){
@@ -186,9 +198,10 @@ public class ReservationDao {
             reservation.setChild_count(rs.getInt("child_count"));
             reservation.setAdult_count(rs.getInt("adult_count"));
             reservation.setRoomId(rs.getInt("room_id"));
-            reservation.setTotal_price(rs.getInt("total_price"));
+            reservation.setTotal_price(rs.getDouble("total_price"));
             reservation.setEmail(rs.getString("email"));
-            reservation.setNightCount(rs.getInt("night_count"));
+            reservation.setStart_date(rs.getString("reservation_start"));
+            reservation.setEnd_date(rs.getString("reservation_end"));
 
 
         }

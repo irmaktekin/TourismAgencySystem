@@ -42,7 +42,7 @@ public class RoomDao {
 
     public ArrayList<Room> getAllRooms() {
         ArrayList<Room> listRoom = new ArrayList<>();
-        String query = "Select * From public.room Order By room_id";
+        String query = "Select * From public.room r Left Join public.hotel h on r.hotel_id = h.hotel_id";
         try {
             ResultSet rs = this.connection.createStatement().executeQuery(query);
             while (rs.next()) {
@@ -71,6 +71,7 @@ public class RoomDao {
         room.setConsole_available(rs.getBoolean("console"));
         room.setSafe_available(rs.getBoolean("safe"));
         room.setProjector_available(rs.getBoolean("projector"));
+        room.setHotel_name(rs.getString("hotel_name"));
 
         return room;
     }
@@ -150,11 +151,11 @@ public class RoomDao {
         return null; // Return null if no matching enum constant is found
     }
 
-    public ArrayList<Room> searchForReservation(String hotelLocation, LocalDate startDate, LocalDate endDate,int customerCount) {
+    public ArrayList<Room> searchForReservation(String hotelLocation, LocalDate startDate, LocalDate endDate,int customerCount,String hotelName) {
         int parameterIndex = 1;
         ArrayList<Room> rooms = new ArrayList<>();
         List<String> conditions = new ArrayList<>();
-        String query = "SELECT r.*, tp.*, h.address " +
+        String query = "SELECT r.*, tp.*, h.address, h.hotel_name " +
                         "FROM room r " +
                         "INNER JOIN public.hotel h ON r.hotel_id = h.hotel_id " +
                         "INNER JOIN public.hotel_time_period tp ON h.hotel_id = tp.hotel_id";
@@ -162,9 +163,11 @@ public class RoomDao {
         if(hotelLocation != null && !hotelLocation.isEmpty()){
             conditions.add("h.address = ?");
         }
-       /* if(hotelName != null && !hotelName.isEmpty()){
+
+        if(hotelName != null && !hotelName.isEmpty()){
             conditions.add("h.hotel_name = ?");
-        }*/
+        }
+
         if(customerCount>0){
             conditions.add("r.bed_count >= ?");
         }
@@ -194,6 +197,9 @@ public class RoomDao {
                 st.setDate(parameterIndex++, java.sql.Date.valueOf(endDate)); // Second parameter for start_date2
 
             }
+            if(hotelName!=null){
+                st.setString(parameterIndex++,hotelName);
+            }
 
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -208,6 +214,7 @@ public class RoomDao {
                 room.setConsole_available(rs.getBoolean("console"));
                 room.setProjector_available(rs.getBoolean("projector"));
                 room.setMinibar_available(rs.getBoolean("minibar"));
+                room.setHotel_name(rs.getString("hotel_name"));
 
                 TimePeriod timePeriod = new TimePeriod();
                 timePeriod.setTime_period_id(rs.getInt("time_period_id"));

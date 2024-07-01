@@ -42,13 +42,15 @@ public class RoomManager {
             rowObject[i++] = obj.isConsole_available();
             rowObject[i++] = obj.isSafe_available();
             rowObject[i++] = obj.isProjector_available();
+            rowObject[i++] = obj.getHotel_name();
+
 
             room_List.add(rowObject);
         }
         return room_List;
     }
-    public ArrayList<Room> searchForTable(String hotelLocation, LocalDate startDate, LocalDate endDate,Integer customerCount){
-        return this.roomDao.searchForReservation( hotelLocation,  startDate,  endDate, customerCount);
+    public ArrayList<Room> searchForTable(String hotelLocation, LocalDate startDate, LocalDate endDate,Integer customerCount,String hotelName){
+        return this.roomDao.searchForReservation( hotelLocation,  startDate,  endDate, customerCount,hotelName);
     }
 
 }

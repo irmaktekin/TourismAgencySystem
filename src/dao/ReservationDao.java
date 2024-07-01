@@ -16,7 +16,7 @@ public class ReservationDao {
     }
     public ArrayList<Reservation> getAllReservations(){
         ArrayList<Reservation> listRes = new ArrayList<>();
-        String query = "Select * From public.reservation Order By reservation_id";
+        String query = "Select * From public.reservation Order By reservation_id ";
         try{
             ResultSet rs = this.connection.createStatement().executeQuery(query);
             while (rs.next()){
@@ -44,6 +44,7 @@ public class ReservationDao {
         return res;
     }
     public boolean createReservation (Reservation res, int hotelId,int roomId,String custname,int nightCount,int childCount,int adultCount,String email){
+
         //calculate the price according to the night,child, adult count.
         String roomPriceQuery = "SELECT adult_price, child_price FROM room WHERE room_id = ?";
         String query = "INSERT INTO public.reservation " +
@@ -61,6 +62,7 @@ public class ReservationDao {
                 " Values (?,?,?,?,?,?,?,?,?)";
 
         try {
+
             PreparedStatement priceStatement = connection.prepareStatement(roomPriceQuery);
             priceStatement.setInt(1, roomId);
             ResultSet priceResultSet = priceStatement.executeQuery();

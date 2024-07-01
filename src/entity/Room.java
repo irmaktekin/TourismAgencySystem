@@ -19,6 +19,16 @@ public class Room {
     private boolean safe_available;
     private boolean projector_available;
 
+    public String getHotel_name() {
+        return hotel_name;
+    }
+
+    public void setHotel_name(String hotel_name) {
+        this.hotel_name = hotel_name;
+    }
+
+    private transient String hotel_name;
+
     public Hotel getHotel() {
         return hotel;
     }

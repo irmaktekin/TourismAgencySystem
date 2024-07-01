@@ -79,6 +79,7 @@ public class EmployeeView extends Layout{
         searchButton.addActionListener(e->{
             try{
                 //Get the fields for search rooms
+                String hotelName = fld_hotelname.getText().trim();
                 String hotelLocation = fld_city.getText().trim();
                 String startDateText = fld_strt_room.getText();
                 DateTimeFormatter inputFormatter  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -94,7 +95,7 @@ public class EmployeeView extends Layout{
                         exception.printStackTrace(); // Or log the error
                     }
                 }
-                ArrayList<Room> roomList = this.roomManager.searchForTable(hotelLocation, startDate, endDate,customerCount);
+                ArrayList<Room> roomList = this.roomManager.searchForTable(hotelLocation, startDate, endDate,customerCount,hotelName);
                 ArrayList<Object[]> roomRowList = this.roomManager.getForTable(this.col_room.length,roomList);
                 loadRoomTable(roomRowList);
             }
@@ -143,7 +144,7 @@ public class EmployeeView extends Layout{
     }
 
     private void loadRoomTable(ArrayList<Object[]> roomList){
-        this.col_room = new Object[]{"ID","HotelID","Stock","Bed","Squaremeter","TV","Minibar","Console","Safe","Projector"};
+        this.col_room = new Object[]{"ID","HotelID","Stock","Bed","Squaremeter","TV","Minibar","Console","Safe","Projector","Hotel Name"};
         if(roomList==null){
             roomList = this.roomManager.getForTable(col_room.length, this.roomManager.getAllHotels());
         }

@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,6 +154,12 @@ public class RoomDao {
     }
 
     public ArrayList<Room> searchForReservation(String hotelLocation, LocalDate startDate, LocalDate endDate,Integer customerCount,String hotelName) {
+
+        DateTimeFormatter dbFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedStartDate = startDate != null ? startDate.format(dbFormatter) : null;
+        String formattedEndDate = endDate != null ? endDate.format(dbFormatter) : null;
+
+
         int parameterIndex = 1;
         System.out.println(customerCount);
         ArrayList<Room> rooms = new ArrayList<>();
@@ -161,6 +168,10 @@ public class RoomDao {
                 "FROM room r " +
                 "INNER JOIN public.hotel h ON r.hotel_id = h.hotel_id " +
                 "INNER JOIN public.hotel_time_period tp ON h.hotel_id = tp.hotel_id";
+
+
+        System.out.println(startDate);
+        System.out.println(endDate);
 
         if(hotelLocation != null && !hotelLocation.isEmpty()){
             conditions.add("h.address = ?");
@@ -173,38 +184,40 @@ public class RoomDao {
         if(customerCount!=null && customerCount>0){
             conditions.add("r.bed_count >= ?");
         }
-        if(startDate!=null){
+        if(formattedStartDate!=null){
             conditions.add("(tp.start_date1 <= ? OR tp.start_date2 <= ?)");
         }
-        if(endDate != null){
+        if(formattedEndDate != null){
             conditions.add("(tp.end_date1 >= ? OR tp.end_date2 >= ?)");
         }
         if(!conditions.isEmpty()){
             query += " WHERE " + String.join(" AND ",conditions);
         }
         try(PreparedStatement st = connection.prepareStatement(query)){
-            if(customerCount!=null && customerCount>0){
-                st.setInt(parameterIndex++,customerCount);
-            }
             if(hotelLocation!=null && !hotelLocation.isEmpty()){
                 st.setString(parameterIndex++,hotelLocation);
             }
-            System.out.println(startDate);
-            if(startDate!=null){
-                st.setDate(parameterIndex++,java.sql.Date.valueOf(startDate));
-                st.setDate(parameterIndex++, java.sql.Date.valueOf(startDate)); // Second parameter for start_date2
 
-            }
-
-            if(endDate!=null){
-                st.setDate(parameterIndex++,java.sql.Date.valueOf(endDate));
-                st.setDate(parameterIndex++, java.sql.Date.valueOf(endDate)); // Second parameter for start_date2
-
-            }
-
-           if(hotelName!=null && !hotelName.isEmpty()){
+            if(hotelName!=null && !hotelName.isEmpty()){
                 st.setString(parameterIndex++,hotelName);
             }
+            if(customerCount!=null && customerCount>0){
+                st.setInt(parameterIndex++,customerCount);
+            }
+
+            System.out.println(startDate);
+            if(formattedStartDate!=null){
+                st.setDate(parameterIndex++,java.sql.Date.valueOf(formattedStartDate));
+                st.setDate(parameterIndex++, java.sql.Date.valueOf(formattedStartDate)); // Second parameter for start_date2
+
+            }
+
+            if(formattedEndDate!=null){
+                st.setDate(parameterIndex++,java.sql.Date.valueOf(formattedEndDate));
+                st.setDate(parameterIndex++, java.sql.Date.valueOf(formattedEndDate)); // Second parameter for start_date2
+
+            }
+
             System.out.println(query);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {

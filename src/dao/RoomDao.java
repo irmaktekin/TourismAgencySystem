@@ -170,7 +170,7 @@ public class RoomDao {
             conditions.add("h.hotel_name = ?");
         }
 
-        if(customerCount>0){
+        if(customerCount!=null && customerCount>0){
             conditions.add("r.bed_count >= ?");
         }
         if(startDate!=null){
@@ -183,7 +183,7 @@ public class RoomDao {
             query += " WHERE " + String.join(" AND ",conditions);
         }
         try(PreparedStatement st = connection.prepareStatement(query)){
-            if(customerCount>0){
+            if(customerCount!=null && customerCount>0){
                 st.setInt(parameterIndex++,customerCount);
             }
             if(hotelLocation!=null && !hotelLocation.isEmpty()){
